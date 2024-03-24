@@ -1,85 +1,21 @@
 "use client";
-
-import React from "react";
 import { Button } from "./ui/button";
-// @ts-nocheck
-"use client"
-import React, { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { useClient } from 'next/client'; // Import useClient hook
-
-// Add the useClient directive
-// @ts-ignore
-export const __useClient = useClient;
 
 const Navbar = () => {
   // get location
-  // const getLocationHandler = async () => {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       console.log(position);
-  //     },
-  //     () => {
-  //       console.log("error");
-  //     },
-  //   );
-  // };
-
-  return (
-    <div>
-      Navbar
-      {/* <Button onClick={getLocationHandler}>Get Location</Button> */}
-    </div>
-  );
-  const client = useClient();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [address, setAddress] = useState('');
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      return;
-    }
-
-    const successHandler = (position) => {
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
-      getAddress(position.coords.latitude, position.coords.longitude);
-    };
-
-    const errorHandler = (error) => {
-      setError(`Error getting geolocation: ${error.message}`);
-    };
-
-    navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
-  }, []);
-
-  const getAddress = async (lat, lng) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`
-      );
-      const data = await response.json();
-      if (data.results && data.results.length > 0) {
-        setAddress(data.results[0].formatted_address);
-      } else {
-        setAddress('Address not found');
-      }
-    } catch (error) {
-      setAddress('Error fetching address');
-    }
-  };
-
-  const handleInputClick = () => {
-    if (latitude && longitude) {
-      getAddress(latitude, longitude);
-    }
+  const getLocationHandler = async () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log(position);
+      },
+      () => {
+        console.log("error");
+      },
+    );
   };
 
   return (
-    <nav className="bg-gray-900 p-7 text-white">
+    <nav className="bg-black p-7 text-white">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <span className="text-lg font-semibold">AkalPlus</span>
@@ -109,25 +45,12 @@ const Navbar = () => {
                 />
               </svg>
             </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full rounded-lg border border-gray-300 bg-black p-4 pl-10 pr-16 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-96"
-              placeholder="Search Mockups, Logos..."
-              onClick={handleInputClick}
-              value={address}
-              readOnly
-            />
-
-            <button
-              type="submit"
-              className="absolute bottom-2.5 end-2.5 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
           </div>
         </form>
-        <Button className="bg-blue-700 hover:bg-blue-800">
+        <Button
+          onClick={getLocationHandler}
+          className="bg-blue-700 hover:bg-blue-800"
+        >
           Get Started
         </Button>
       </div>

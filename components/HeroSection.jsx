@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { Button } from "./ui/button";
 
 const HeroSection = () => {
   return (
     <section className="body-font bg-black text-hoverCol">
       <div className="container mx-auto flex flex-col items-center px-5 py-24 md:flex-row">
         <div className="mb-16 flex flex-col items-center text-center md:mb-0 md:w-1/2 md:items-start md:pr-16 md:text-left lg:flex-grow lg:pr-24">
-          <h1 className="title-font mb-4 text-4xl font-medium text-white sm:text-5xl">
+          <h1 className="title-font mb-4 text-4xl font-medium text-white sm:text-6xl">
             Before they sold out
             <br className="hidden lg:inline-block" />
             readymade gluten
@@ -17,9 +18,9 @@ const HeroSection = () => {
             hexagon try-hard chambray.
           </p>
           <div className="flex justify-center">
-            <button className="inline-flex rounded border-0 bg-white px-4 py-2 text-lg text-black hover:bg-hoverCol focus:outline-none">
-              Getting Started
-            </button>
+            <Button variant="primary" size="primary">
+              Get Started
+            </Button>
           </div>
         </div>
         <div className="w-5/6 md:w-1/2 lg:w-full lg:max-w-lg">
