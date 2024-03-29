@@ -1,20 +1,20 @@
-"use client";
+'use client'
 
-import clsx from "clsx";
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import clsx from 'clsx'
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 
-import { hamIcon } from "@/public/Icon";
-import Image from "next/image";
-import axios from "axios";
-import Logo from "./Logo";
+import { hamIcon } from '@/public/Icon'
+import Image from 'next/image'
+import axios from 'axios'
+import Logo from './Logo'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "./ui/navigation-menu";
-import { Button } from "./ui/button";
+} from './ui/navigation-menu'
+import { Button } from './ui/button'
 import {
   Sheet,
   SheetClose,
@@ -22,39 +22,39 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from './ui/sheet'
 function Header(props) {
-  const [scrollStatus, setScrollStatus] = useState(false);
-  const [scrollStarted, setScrollStarted] = useState(false);
+  const [scrollStatus, setScrollStatus] = useState(false)
+  const [scrollStarted, setScrollStarted] = useState(false)
 
   const handleScroll = () => {
     if (window.scrollY > 650) {
-      setScrollStatus(true);
+      setScrollStatus(true)
     } else {
-      setScrollStatus(false);
+      setScrollStatus(false)
     }
     if (window.scrollY > 10) {
-      setScrollStarted(true);
+      setScrollStarted(true)
     } else {
-      setScrollStarted(false);
+      setScrollStarted(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (window.scrollY > 650) {
-      setScrollStatus(true);
+      setScrollStatus(true)
     }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll)
 
     //cleanup function when component unmounts
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   //Geolocation Functionality
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState(null)
   // useEffect(() => {
   //   // Get user's current location
   //   if (navigator.geolocation) {
@@ -67,7 +67,7 @@ function Header(props) {
   //   }
   // }, []);
 
-  const [locationName, setLocationName] = useState(null);
+  const [locationName, setLocationName] = useState(null)
 
   useEffect(() => {
     // Get user's current location
@@ -76,41 +76,41 @@ function Header(props) {
         setUserLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        });
-      });
+        })
+      })
     }
-  }, []);
+  }, [])
   useEffect(() => {
     const fetchLocationName = async () => {
       // Reverse geocode to get location name
       if (userLocation) {
         try {
           const response = await axios.get(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18&addressdetails=1`,
-          );
-          const data = response.data;
-          console.log("data = ", data.display_name);
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18&addressdetails=1`
+          )
+          const data = response.data
+          console.log('data = ', data.display_name)
           if (data && data.address) {
-            setLocationName(data.display_name);
+            setLocationName(data.display_name)
           }
         } catch (error) {
-          console.error("Error fetching location:", error);
+          console.error('Error fetching location:', error)
         }
       }
-    };
+    }
 
-    fetchLocationName();
-  }, [userLocation]);
+    fetchLocationName()
+  }, [userLocation])
 
   return (
     <header
       className={clsx(
-        "fixed top-0 z-[1000] w-full select-none bg-transparent transition-transform ease-in-out",
+        'fixed top-0 z-[1000] w-full select-none bg-transparent transition-transform ease-in-out',
         {
-          "pointer-events-none translate-y-[-100%]": scrollStatus,
-          "text-textPrimary border-b-0 backdrop-blur-md": scrollStarted,
+          'pointer-events-none translate-y-[-100%]': scrollStatus,
+          'text-textPrimary border-b-0 backdrop-blur-md': scrollStarted,
           [props?.className]: true,
-        },
+        }
       )}
     >
       <div className="mx-auto flex h-14 max-w-screen-2xl items-center px-4 lg:h-20 lg:px-10">
@@ -163,7 +163,7 @@ function Header(props) {
         )}
       </div>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header
