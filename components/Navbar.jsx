@@ -88,6 +88,7 @@ function Header(props) {
           const response = await axios.get(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18&addressdetails=1`
           )
+          console.log('response = ', response.data, userLocation)
           const data = response.data
           console.log('data = ', data.display_name)
           if (data && data.address) {
@@ -155,7 +156,7 @@ function Header(props) {
             </div>
             {/* "Get Started" button with margin */}
             <Link href="/contact#contact-form" className="hidden md:block">
-              <Button className="bg-primaryForeground text-textDark hover:border-primaryForeground hover:text-textPrimary ml-2 text-base font-semibold hover:border hover:bg-transparent md:block">
+              <Button className="text-textDark ml-2 bg-white text-base font-semibold hover:bg-white md:block">
                 Get Started
               </Button>
             </Link>
