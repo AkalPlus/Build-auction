@@ -1,116 +1,169 @@
-// @ts-nocheck
-"use client"
+"use client";
+
+import clsx from "clsx";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+
+import { hamIcon } from "@/public/Icon";
+import Image from "next/image";
+import axios from "axios";
+import Logo from "./Logo";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "./ui/navigation-menu";
 import { Button } from "./ui/button";
-import { useClient } from 'next/client'; // Import useClient hook
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+function Header(props) {
+  const [scrollStatus, setScrollStatus] = useState(false);
+  const [scrollStarted, setScrollStarted] = useState(false);
 
-// Add the useClient directive
-// @ts-ignore
-export const __useClient = useClient;
-
-const Navbar = () => {
-  const client = useClient();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [address, setAddress] = useState('');
-  const [error, setError] = useState(null);
+  const handleScroll = () => {
+    if (window.scrollY > 650) {
+      setScrollStatus(true);
+    } else {
+      setScrollStatus(false);
+    }
+    if (window.scrollY > 10) {
+      setScrollStarted(true);
+    } else {
+      setScrollStarted(false);
+    }
+  };
 
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      return;
+    if (window.scrollY > 650) {
+      setScrollStatus(true);
     }
 
-    const successHandler = (position) => {
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
-      getAddress(position.coords.latitude, position.coords.longitude);
-    };
+    window.addEventListener("scroll", handleScroll);
 
-    const errorHandler = (error) => {
-      setError(`Error getting geolocation: ${error.message}`);
+    //cleanup function when component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
-
-    navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
   }, []);
 
-  const getAddress = async (lat, lng) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_API_KEY`
-      );
-      const data = await response.json();
-      if (data.results && data.results.length > 0) {
-        setAddress(data.results[0].formatted_address);
-      } else {
-        setAddress('Address not found');
-      }
-    } catch (error) {
-      setAddress('Error fetching address');
-    }
-  };
+  //Geolocation Functionality
+  const [userLocation, setUserLocation] = useState(null);
+  // useEffect(() => {
+  //   // Get user's current location
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       setUserLocation({
+  //         latitude: position.coords.latitude,
+  //         longitude: position.coords.longitude,
+  //       });
+  //     });
+  //   }
+  // }, []);
 
-  const handleInputClick = () => {
-    if (latitude && longitude) {
-      getAddress(latitude, longitude);
+  const [locationName, setLocationName] = useState(null);
+
+  useEffect(() => {
+    // Get user's current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setUserLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      });
     }
-  };
+  }, []);
+  useEffect(() => {
+    const fetchLocationName = async () => {
+      // Reverse geocode to get location name
+      if (userLocation) {
+        try {
+          const response = await axios.get(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLocation.latitude}&lon=${userLocation.longitude}&zoom=18&addressdetails=1`,
+          );
+          const data = response.data;
+          console.log("data = ", data.display_name);
+          if (data && data.address) {
+            setLocationName(data.display_name);
+          }
+        } catch (error) {
+          console.error("Error fetching location:", error);
+        }
+      }
+    };
+
+    fetchLocationName();
+  }, [userLocation]);
 
   return (
-    <nav className="bg-gray-900 p-7 text-white">
-      <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center">
-          <span className="text-lg font-semibold">AkalPlus</span>
-        </div>
-        <form className="mx-auto max-w-xl">
-          <label
-            htmlFor="default-search"
-            className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Search
-          </label>
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-              <svg
-                className="h-4 w-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
+    <header
+      className={clsx(
+        "fixed top-0 z-[1000] w-full select-none bg-transparent transition-transform ease-in-out",
+        {
+          "pointer-events-none translate-y-[-100%]": scrollStatus,
+          "text-textPrimary border-b-0 backdrop-blur-md": scrollStarted,
+          [props?.className]: true,
+        },
+      )}
+    >
+      <div className="mx-auto flex h-14 max-w-screen-2xl items-center px-4 lg:h-20 lg:px-10">
+        <Link
+          href="/"
+          className="ml-2 mr-auto transition-all duration-500 ease-in-out lg:hover:scale-110"
+        >
+          <Logo />
+        </Link>
+        <NavigationMenu className="hidden flex-1 self-center md:block">
+          <NavigationMenuList className="gap-9">
+            {/* Your existing navigation items */}
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        {/* Display user's current location */}
+        {userLocation && (
+          <div className="flex items-center">
+            <div className="box mr-2">
+              <input
+                type="text"
+                value={locationName}
+                placeholder="Enter Location"
+                onChange={(e) => setLocationName(e.target.value)}
+                className="input-field"
+              />
+              <style jsx>{`
+                .box {
+                  border: 1px solid #ccc;
+                  background-color: #f9f9f9;
+                  border-radius: 3px;
+                  width: 250px;
+                  margin: 0 auto;
+                }
+                .input-field {
+                  width: calc(100% - 2px);
+                  border: none;
+                  padding: 5px 10px;
+                  border-radius: 3px;
+                }
+              `}</style>
             </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full rounded-lg border border-gray-300 bg-black p-4 pl-10 pr-16 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-96"
-              placeholder="Search Mockups, Logos..."
-              onClick={handleInputClick}
-              value={address}
-              readOnly
-            />
-
-            <button
-              type="submit"
-              className="absolute bottom-2.5 end-2.5 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
+            {/* "Get Started" button with margin */}
+            <Link href="/contact#contact-form" className="hidden md:block">
+              <Button className="bg-primaryForeground text-textDark hover:border-primaryForeground hover:text-textPrimary ml-2 text-base font-semibold hover:border hover:bg-transparent md:block">
+                Get Started
+              </Button>
+            </Link>
           </div>
-        </form>
-        <Button className="bg-blue-700 hover:bg-blue-800">
-          Get Started
-        </Button>
+        )}
       </div>
-    </nav>
+    </header>
   );
-};
+}
 
-export default Navbar;
+export default Header;
