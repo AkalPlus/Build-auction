@@ -1,17 +1,19 @@
+import ContractorLists from '@/components/ContractorLists'
+import CTA from '@/components/CTA'
+import Faq from '@/components/Faq'
+import HeroSection from '@/components/HeroSection'
 import Navbar from '@/components/Navbar'
-import {
-  LoginLink,
-  RegisterLink,
-} from '@kinde-oss/kinde-auth-nextjs/components'
-import Image from 'next/image'
+import WorkList from '@/components/WorkList'
 
 export default function Home() {
   return (
-    <div className="h-[200vh]">
-      <Navbar />
-      <LoginLink>Sign in</LoginLink>
-
-      <RegisterLink>Sign up</RegisterLink>
-    </div>
+    <>
+      {/* <Navbar /> */}
+      <HeroSection />
+      <WorkList />
+      <ContractorLists />
+      <CTA />
+      <Faq />
+    </>
   )
 }
