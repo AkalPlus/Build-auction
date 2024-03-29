@@ -5,6 +5,5 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "recommendations": ["esbenp.prettier-vscode", "bradlc.vscode-tailwindcss"]
+  }
 }
