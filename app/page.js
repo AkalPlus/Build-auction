@@ -1,6 +1,7 @@
 import ContractorLists from '@/components/ContractorLists'
 import CTA from '@/components/CTA'
 import Faq from '@/components/Faq'
+import Footer from '@/components/Footer'
 import HeroSection from '@/components/HeroSection'
 import Navbar from '@/components/Navbar'
 import { Button } from '@/components/ui/button'
@@ -13,7 +14,7 @@ import {
 export default function Home() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <HeroSection />
       <WorkList />
       <ContractorLists />
@@ -28,6 +29,7 @@ export default function Home() {
         </RegisterLink>
       </div>
       <Faq />
+      <Footer />
     </>
   )
 }
