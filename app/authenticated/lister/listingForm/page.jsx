@@ -345,7 +345,7 @@ const Dashboard = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="grid gap-3">
+                      {/* <div className="grid gap-3">
                         <Label htmlFor="subcategory">
                           Subcategory (optional)
                         </Label>
@@ -364,13 +364,13 @@ const Dashboard = () => {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                      </div>
+                      </div> */}
                     </div>
                   </CardContent>
                 </Card>
               </div>
               <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle>Product Status</CardTitle>
                   </CardHeader>
@@ -391,7 +391,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
+                </Card> */}
                 <Card className="overflow-hidden">
                   <CardHeader>
                     <CardTitle>Product Images</CardTitle>
