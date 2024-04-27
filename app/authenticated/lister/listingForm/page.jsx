@@ -2,6 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
+
 import {
   ChevronLeft,
   Home,
@@ -53,14 +55,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import {
@@ -70,8 +64,52 @@ import {
 } from '@/components/ui/tooltip'
 
 import { logo } from '@/public/Image'
+import { useEffect } from 'react'
 
 const Dashboard = () => {
+  const {
+    permissions,
+    isLoading,
+    user,
+    accessToken,
+    organization,
+    userOrganizations,
+    getPermission,
+    getBooleanFlag,
+    getIntegerFlag,
+    getFlag,
+    getStringFlag,
+    getClaim,
+    getAccessToken,
+    getToken,
+    getIdToken,
+    getOrganization,
+    getPermissions,
+    getUserOrganizations,
+  } = useKindeBrowserClient()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken()
+        console.log(token, 'token')
+        if (token) {
+          await fetch('http://localhost:3001/api/auth', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        }
+        console.log(token)
+      } catch (error) {
+        console.log(error, 'error while getting the token')
+      }
+    }
+    fetchData()
+  }, [user])
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
