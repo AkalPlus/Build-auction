@@ -21,7 +21,7 @@ export default function Home() {
       <CTA />
 
       <div className="flex justify-around bg-black">
-        <LoginLink postLoginRedirectURL="/">
+        <LoginLink postLoginRedirectURL="/authenticated/lister/listingForm">
           <Button variant="primary">Sign in</Button>
         </LoginLink>
         <RegisterLink postLoginRedirectURL="/">
