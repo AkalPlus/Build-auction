@@ -12,3 +12,9 @@ copy contents from .env.example and paste it in an new file called .env.local as
 `npm run i`
 `npm run dev`
 Project will start running in dev mode on localHost
+
+## Tech used
+
+Nextjs for webapp
+Tanstack query for async call
+Zustand for state managment
