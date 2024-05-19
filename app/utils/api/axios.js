@@ -8,7 +8,7 @@ const useAxios = () => {
 
   //creates an interceptor that will intercept all requests and add the token to the header and base_url
   const axiosInstance = axios.create({
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     timeout: 1500000,
   })
 
