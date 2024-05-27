@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
-import useAxios from './axios'
 import { queryKey } from '@/app/constants/queryKey'
+import useAxios from '@/app/utils/api/axios'
 
 export const useProductList = () => {
   const { axiosInstance } = useAxios()
 
-  const getProductList = async () => {
+  const getJobList = async () => {
     return axiosInstance.get('/product-list')
   }
 
-  const getProductQuery = useQuery({
+  const getJobQuery = useQuery({
     queryKey: queryKey.JOB_LIST,
-    queryFn: getProductList,
+    queryFn: getJobList,
   })
 
   return {
-    getProductQuery,
-    getProductList,
+    getJobList,
+    getJobQuery,
   }
 }
