@@ -1,8 +1,7 @@
-import React from "react";
-import { logo } from "@/public/Image/index.js";
+import React from 'react'
+import { logo } from '@/public/Image/index.js'
 
 function Logo() {
-  console.log(logo);
   return (
     <div className="w-10 lg:w-16">
       {/* <span
@@ -14,7 +13,7 @@ function Logo() {
       </span> */}
       <img className="w-full" src={logo.src} alt="AkalPs" />
     </div>
-  );
+  )
 }
 
-export default Logo;
+export default Logo
